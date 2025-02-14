@@ -19,10 +19,10 @@ function Tile (species, name, fact) {
     )
 }
 
-function Dino ({ species, weight, height, diet, where, when, fact }, human) {
-    const compareWeight = () => `The ${species} weighs ${weight - human.getWeight()} more lbs than you.`
-    const compareHeight = () => `The ${species} is ${height - human.getHeight()} inches more than you.`
-    const compareDiet = () => {
+function Dino ({ species, weight, height, diet, where, when, fact }) {
+    const compareWeight = (human) => `The ${species} weighs ${weight - human.getWeight()} more lbs than you.`
+    const compareHeight = (human) => `The ${species} is ${height - human.getHeight()} inches more than you.`
+    const compareDiet = (human) => {
         if (diet.toLowerCase() === human.getDiet().toLowerCase()) {
             return `The ${species} and you are both ${diet}s.`
         } else {
@@ -30,34 +30,21 @@ function Dino ({ species, weight, height, diet, where, when, fact }, human) {
         }
     }
     
-    const randomFact = () => {
-        
-        if (species === 'Pigeon') {
-            return fact
-        }
-        
-        const roll = Math.floor(Math.random() * 6 + 1)
-        
-        switch (roll) {
-            case 1:
-                return fact
-            case 2:
-                return compareWeight()
-            case 3:
-                return compareHeight()
-            case 4:
-                return compareDiet()
-            case 5:
-                return `The ${species} lived during the ${when} period.`
-            case 6:
-                return `The ${species} once lived in what is now ${where}.`
-        }
-        
-    }
+    const getFact = () => fact
+    const getSpecies = () => species
+    const getWhen = () => when
+    const getWhere = () => where
     
-    const html = () => Tile(species, species, randomFact())
+    const html = (fact) => Tile(species, species, fact)
     
     return {
+        compareWeight,
+        compareHeight,
+        compareDiet,
+        getFact,
+        getSpecies,
+        getWhen,
+        getWhere,
         html
     }
 }
@@ -75,6 +62,7 @@ function Human ({ name, feet, inches, weight, diet }) {
         getDiet
     }
 }
+
 
 
 // Form Handling
@@ -99,12 +87,39 @@ $compareForm.addEventListener('submit', async function (e) {
         
         $compareForm.style.display = 'none'
         
-        const dinos = data.Dinos.forEach((dino, index) => {
+        const dinos = data.Dinos.forEach((obj, index) => {
             if (index === 4) {
                 $grid.append(human.html())
             }
-        
-            $grid.append(Dino(dino, human).html())
+            
+            const dino = Dino(obj)
+            
+            if (dino.getSpecies() === 'Pigeon') {
+                $grid.append(dino.html(dino.getFact()))
+            } else {
+                const roll = Math.floor(Math.random() * 6 + 1)
+                
+                switch (roll) {
+                    case 1:
+                        $grid.append(dino.html(dino.getFact()))
+                        break;
+                    case 2:
+                        $grid.append(dino.html(dino.compareWeight(human)))
+                        break;
+                    case 3:
+                        $grid.append(dino.html(dino.compareHeight(human)))
+                        break;
+                    case 4:
+                        $grid.append(dino.html(dino.compareDiet(human)))
+                        break;
+                    case 5:
+                        $grid.append(dino.html(`The ${dino.getSpecies()} lived during the ${dino.getWhen()} period.`))
+                        break;
+                    case 6:
+                        $grid.append(dino.html(`The ${dino.getSpecies()} lived during the ${dino.getWhere()} period.`))
+                        break;
+                }
+            }
         })    
     } else {
         $compareForm.classList.add('was-validated')   
