@@ -9,38 +9,57 @@
     <link href="https://fonts.googleapis.com/css?family=Frijole|Open+Sans|Oswald&display=swap" rel="stylesheet">
     <!-- Normalize browser styles -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link href="app.css" rel="stylesheet">
     <!-- Link to app.js with defer till HTML render -->
     <script defer src="app.js"></script>
 </head>
 <body>
-    <header>
+    <header class="text-center mb-5">
         <h2>Natural History Museum</h2> 
         <h1>Dinosaurs</h1>
         <h3>How do you compare?</h3>
     </header>
     <!-- Form to get user input -->
-    <form id="dino-compare">
-        <div class="form-container">
-            <p>Name:</p>
-            <input id="name" class="form-field__full" type="text" name="name">
-            <p>Height</p>
-            <label>Feet: <input id="feet" class="form-field__short" type="number" name="feet"></label>
-            <label>inches: <input id="inches" class="form-field__short" type="number" name="inches"></label>
-            <p>Weight:</p>
-            <label><input id="weight" class="form-field__full" type="number" name="weight">lbs</label>
-            <p>Diet:</p>
-            <select id="diet" class="form-field__full" name="diet">
-                <option>Herbavor</option>
-                <option>Omnivor</option>
-                <option>Carnivor</option>
-            </select>
-            <div id="btn">Compare Me!</div>
+    <form id="compareForm" class="row" novalidate>
+        <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3 bg-light p-5">
+            <div class="form-group mb-3">
+                <label class="form-label fw-bold">Name:</label>
+                <input id="name" class="form-control" type="text" name="name" required>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label class="form-label fw-bold">Height:</label>
+                <div class="row">
+                    <div class="col">
+                        <input id="feet" class="form-control" type="number" name="feet" required><span class="form-text">Feet</span>
+                    </div>
+                    <div class="col">
+                        <input id="inches" class="form-control" type="number" name="inches" required><span class="form-text">Inches</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label class="form-label fw-bold">Weight:</label>
+                <input id="weight" class="form-control" type="number" name="weight" required><span class="form-text">lbs</span>
+            </div>
+            
+            <div class="form-group mb-3">
+                <label class="form-label fw-bold">Diet:</label>
+                <select id="diet" class="form-select mb-3" name="diet" required>
+                    <option value="">Select a Diet</option>
+                    <option>Herbavor</option>
+                    <option>Omnivor</option>
+                    <option>Carnivor</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-secondary">Compare Me!</button>
         </div>
     </form>
     <!-- .grid to attach tiles to -->
     <main id="grid"></main>
-    <footer>
+    <footer class="text-center">
         <!-- Include information source -->
         <p class="fine-print">Data Sourced from <a href="https://www.wikipedia.org/">Wikipedia.org</a>, all numbers are approximations.</p>
     </footer>

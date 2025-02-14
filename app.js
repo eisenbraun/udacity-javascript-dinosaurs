@@ -1,32 +1,106 @@
+function createElement (type, props, ...children) {
+    const $el = document.createElement(type)
+    Object.keys(props).forEach((prop) => 
+        prop === 'style' ? 
+        Object.keys(props[prop]).forEach((style) => $el[prop][style] = props[prop][style]) : 
+        $el[prop] = props[prop]);
+    $el.append(...children)
+    return $el
+}
 
-    // Create Dino Constructor
 
+function Tile (species, name, fact) {
+    return createElement(
+        'div',
+        { className: 'grid-item' },
+        createElement('h3', { className: 'text-center mt-2' }, name),
+        createElement('img', { src: `images/${species.toLowerCase()}.png`, alt: name}),
+        createElement('p', {}, fact)
+    )
+}
 
-    // Create Dino Objects
-
-
-    // Create Human Object
-
-    // Use IIFE to get human data from form
-
-
-    // Create Dino Compare Method 1
-    // NOTE: Weight in JSON file is in lbs, height in inches. 
-
+function Dino ({ species, weight, height, diet, where, when, fact }, human) {
+    const compareWeight = () => `The ${species} weighs ${weight - human.getWeight()} more lbs than you.`
+    const compareHeight = () => `The ${species} is ${height - human.getHeight()} inches more than you.`
+    const compareDiet = () => {
+        if (diet.toLowerCase() === human.getDiet().toLowerCase()) {
+            return `The ${species} and you are both ${diet}s.`
+        } else {
+            return `The ${species} was a ${diet} and you are a ${human.getDiet()}`
+        }
+    }
     
-    // Create Dino Compare Method 2
-    // NOTE: Weight in JSON file is in lbs, height in inches.
-
+    const randomFact = () => {
+        
+        if (species === 'Pigeon') {
+            return fact
+        }
+        
+        const roll = Math.floor(Math.random() * 6 + 1)
+        
+        switch (roll) {
+            case 1:
+                return fact
+            case 2:
+                return compareWeight()
+            case 3:
+                return compareHeight()
+            case 4:
+                return compareDiet()
+            case 5:
+                return `The ${species} lived during the ${when} period.`
+            case 6:
+                return `The ${species} once lived in what is now ${where}.`
+        }
+        
+    }
     
-    // Create Dino Compare Method 3
-    // NOTE: Weight in JSON file is in lbs, height in inches.
+    const html = () => Tile(species, species, randomFact())
+    
+    return {
+        html
+    }
+}
+
+function Human ({ name, feet, inches, weight, diet }) {
+    const html = () => Tile('Human', name, '')
+    const getWeight = () => parseInt(weight)
+    const getHeight = () => parseInt(feet) * 12 + parseInt(inches)
+    const getDiet = () => diet
+    
+    return {
+        html,
+        getWeight,
+        getHeight,
+        getDiet
+    }
+}
 
 
-    // Generate Tiles for each Dino in Array
-  
-        // Add tiles to DOM
+// Form Handling
+const $compareForm = document.getElementById('compareForm')
 
-    // Remove form from screen
+$compareForm.addEventListener('submit', async function (e) {
+    e.preventDefault()
+    
+    const response = await fetch('dino.json')
+    const data = await response.json()
+    const $grid = document.getElementById('grid')
+    const tiles = []
+    
+    const elements = Array.from($compareForm.elements)
+    const formData = {}
+    elements.forEach(($el) => { formData[$el.id] = $el.value })
+    const human = Human({ name: 'Ted', feet: '5', inches: '11', weight: '170', diet: 'Herbavor'})
+    // const human = Human(formData)
+    
+    $compareForm.style.display = 'none'
 
+    const dinos = data.Dinos.forEach((dino, index) => {
+        if (index === 4) {
+            $grid.append(human.html())
+        }
 
-// On button click, prepare and display infographic
+        $grid.append(Dino(dino, human).html())
+    })    
+})
