@@ -26,33 +26,45 @@
             <div class="form-group mb-3">
                 <label class="form-label fw-bold">Name:</label>
                 <input id="name" class="form-control" type="text" name="name" required>
+                <div class="invalid-feedback">
+                    Please provide a name
+                </div>
             </div>
             
             <div class="form-group mb-3">
                 <label class="form-label fw-bold">Height:</label>
                 <div class="row">
                     <div class="col">
-                        <input id="feet" class="form-control" type="number" name="feet" required><span class="form-text">Feet</span>
+                        <input id="feet" class="form-control" type="number" min="0" name="feet" value="0" required><span class="form-text">Feet</span>
                     </div>
                     <div class="col">
-                        <input id="inches" class="form-control" type="number" name="inches" required><span class="form-text">Inches</span>
+                        <input id="inches" class="form-control" type="number" min="0" name="inches" value="0" required><span class="form-text">Inches</span>
                     </div>
+                </div>
+                <div class="invalid-feedback">
+                    Please provide a height
                 </div>
             </div>
             
             <div class="form-group mb-3">
                 <label class="form-label fw-bold">Weight:</label>
-                <input id="weight" class="form-control" type="number" name="weight" required><span class="form-text">lbs</span>
+                <input id="weight" class="form-control" type="number" min="0" name="weight" value="0" required><span class="form-text">lbs</span>
+                <div class="invalid-feedback">
+                    Please provide a weight
+                </div>
             </div>
             
             <div class="form-group mb-3">
                 <label class="form-label fw-bold">Diet:</label>
-                <select id="diet" class="form-select mb-3" name="diet" required>
+                <select id="diet" class="form-select" name="diet" required>
                     <option value="">Select a Diet</option>
                     <option>Herbivore</option>
                     <option>Omnivore</option>
                     <option>Carnivore</option>
                 </select>
+                <div class="invalid-feedback">
+                    Please select a diet
+                </div>
             </div>
             <button type="submit" class="btn btn-secondary">Compare Me!</button>
         </div>

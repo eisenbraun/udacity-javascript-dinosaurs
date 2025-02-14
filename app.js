@@ -83,24 +83,30 @@ const $compareForm = document.getElementById('compareForm')
 $compareForm.addEventListener('submit', async function (e) {
     e.preventDefault()
     
-    const response = await fetch('dino.json')
-    const data = await response.json()
-    const $grid = document.getElementById('grid')
-    const tiles = []
-    
-    const elements = Array.from($compareForm.elements)
-    const formData = {}
-    elements.forEach(($el) => { formData[$el.id] = $el.value })
-    const human = Human({ name: 'Ted', feet: '5', inches: '11', weight: '170', diet: 'Herbavor'})
-    // const human = Human(formData)
-    
-    $compareForm.style.display = 'none'
-
-    const dinos = data.Dinos.forEach((dino, index) => {
-        if (index === 4) {
-            $grid.append(human.html())
-        }
-
-        $grid.append(Dino(dino, human).html())
-    })    
+    // validating form
+    if ($compareForm.checkValidity()) {
+        // creating info graph
+        const response = await fetch('dino.json')
+        const data = await response.json()
+        const $grid = document.getElementById('grid')
+        const tiles = []
+        
+        const elements = Array.from($compareForm.elements)
+        const formData = {}
+        elements.forEach(($el) => { formData[$el.id] = $el.value })
+        // const human = Human({ name: 'Ted', feet: '5', inches: '11', weight: '170', diet: 'Herbavor'})
+        const human = Human(formData)
+        
+        $compareForm.style.display = 'none'
+        
+        const dinos = data.Dinos.forEach((dino, index) => {
+            if (index === 4) {
+                $grid.append(human.html())
+            }
+        
+            $grid.append(Dino(dino, human).html())
+        })    
+    } else {
+        $compareForm.classList.add('was-validated')   
+    }
 })
