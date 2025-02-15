@@ -3,7 +3,6 @@ body {
     background: rgb(111, 208, 224);
     background: linear-gradient(0deg,rgb(111, 208, 224) 0%, rgb(171, 228, 167) 100%);
     font-family: 'Open Sans', sans-serif;
-    text-align: center;
     min-height: 100vh;
 }
 
@@ -19,6 +18,9 @@ h3 {
     font-family: 'Oswald', sans-serif;
 }
 
+img {
+    max-width: 100%;
+}
 @media (min-width: 650px) {
     h1 {
         font-size: 5em;
@@ -31,7 +33,7 @@ h3 {
     }
 }
 
-p {
+p, label {
     font-weight: 100;
 }
 
@@ -108,6 +110,7 @@ p {
     position: absolute;
     bottom: 0;
     width: 100%;
+    height: 106px;
     padding: 0.8em 0.8em 1.8em;
     margin:0;
     box-sizing: border-box;
@@ -126,13 +129,14 @@ p {
 }
 
 form p {
+    display: block;
     margin-bottom: 0.3em;
     font-size: 1.3em;
     font-weight: 600;
     font-family: 'Oswald', sans-serif;
 }
 
-input {
+/* input {
     padding: 0.7em;
     background: #fff;
     border: 0;
@@ -147,13 +151,13 @@ input {
 .form-field__full {
     width: 100%;
     box-sizing: border-box;
-}
+} */
 
 select {
     display: block;
 }
 
-#btn {
+/* .btn {
     display: inline-block;
     background: #ccc;
     padding: 0.8em;
@@ -161,10 +165,14 @@ select {
     transition: ease 0.3s all;
 }
 
-#btn:hover {
+.btn:hover {
     background: #777;
     color: #fff;
     cursor: pointer;
+} */
+
+.d-inline {
+    display: inline-block;
 }
 
 /* Footer */
