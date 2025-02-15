@@ -20,8 +20,31 @@ function Tile (species, name, fact) {
 }
 
 function Dino ({ species, weight, height, diet, where, when, fact }) {
-    const compareWeight = (human) => `The ${species} weighs ${weight - human.getWeight()} more lbs than you.`
-    const compareHeight = (human) => `The ${species} is ${height - human.getHeight()} inches more than you.`
+    const compareWeight = (human) => {
+        const diff = weight - human.getWeight()
+        
+        if (diff < 0) {
+            return `The ${species} weighs ${Math.abs(diff)} fewer lbs than you.`
+        } else if (diff > 0) {
+            return `The ${species} weighs ${diff} more lbs than you.`
+        } else {
+            return `The ${species} and you are the same weight.`
+        }
+    }
+    
+    
+    const compareHeight = (human) => {
+        const diff = height - human.getHeight()
+        if (diff < 0) {
+            return `The ${species} is ${Math.abs(diff)} inches shorter than you.`
+        } else if (diff > 0) {
+            return `The ${species} is ${diff} inches taller than you.`
+        } else {
+            return `The ${species} and you are the same height.`
+        }
+    }
+    
+    
     const compareDiet = (human) => {
         if (diet.toLowerCase() === human.getDiet().toLowerCase()) {
             return `The ${species} and you are both ${diet}s.`
