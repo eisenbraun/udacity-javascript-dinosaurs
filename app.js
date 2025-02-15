@@ -8,6 +8,22 @@ function createElement (type, props, ...children) {
     return $el
 }
 
+Array.prototype.shuffle = function () {
+    const copy = this.slice(0)
+    
+    let i = 0
+    const length = copy.length
+    while (i < length) {
+        const r = Math.floor(Math.random() * length)
+        const tmp = copy[i]
+        copy[i] = copy[r]
+        copy[r] = tmp
+        i++
+    }
+    
+    return copy
+}
+
 
 function Tile (species, name, fact) {
     return createElement(
@@ -91,27 +107,31 @@ function Human ({ name, feet, inches, weight, diet }) {
 const $compareForm = document.getElementById('compareForm')
 const $return = document.getElementById('return')
 const $grid = document.getElementById('grid')
+const testing = true
 
 $compareForm.addEventListener('submit', async function (e) {
     e.preventDefault()
     
     // validating form
-    if ($compareForm.checkValidity()) {
+    if (testing || $compareForm.checkValidity()) {
         // creating info graph
         const response = await fetch('dino.json')
         const data = await response.json()
+        const dinos = data.Dinos.shuffle()
         const tiles = []
         
         const elements = Array.from($compareForm.elements)
         const formData = {}
         elements.forEach(($el) => { formData[$el.id] = $el.value })
-        // const human = Human({ name: 'Ted', feet: '5', inches: '11', weight: '170', diet: 'Herbavor'})
-        const human = Human(formData)
+        
+        const human = testing ? 
+            Human({ name: 'Ted', feet: '5', inches: '11', weight: '170', diet: 'Herbivore'}) : 
+            Human(formData)
         
         $compareForm.classList.add('d-none')
         $return.classList.remove('d-none')
         
-        const dinos = data.Dinos.forEach((obj, index) => {
+        dinos.forEach((obj, index) => {
             if (index === 4) {
                 $grid.append(human.html())
             }
